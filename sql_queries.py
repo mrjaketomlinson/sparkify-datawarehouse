@@ -16,17 +16,17 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 # CREATE TABLES
 staging_events_table_create= ("""
     CREATE TABLE IF NOT EXISTS staging_events (
-        artist varchar(175),
-        auth varchar(100),
-        firstName varchar(100),
-        gender varchar(1),
+        artist varchar(255),
+        auth varchar(255),
+        firstName varchar(255),
+        gender varchar(255),
         itemInSession integer,
-        lastName varchar(100),
+        lastName varchar(255),
         length float,
-        level varchar(4),
-        location varchar(200),
-        method varchar(6),
-        page varchar(25),
+        level varchar(255),
+        location varchar(255),
+        method varchar(255),
+        page varchar(255),
         registration float,
         sessionId integer,
         song varchar(255),
@@ -40,13 +40,13 @@ staging_events_table_create= ("""
 staging_songs_table_create = ("""
     CREATE TABLE IF NOT EXISTS staging_songs (
         num_songs integer NOT NULL,
-        artist_id varchar(20) NOT NULL,
-        artist_location varchar(200), 
-        artist_latitude varchar(100), 
-        artist_longitude varchar(100),
-        artist_name varchar(175),
-        song_id varchar(20),
-        title varchar(175),
+        artist_id varchar(255) NOT NULL,
+        artist_location varchar(255), 
+        artist_latitude varchar(255), 
+        artist_longitude varchar(255),
+        artist_name varchar(255),
+        song_id varchar(255),
+        title varchar(255),
         duration float,
         year integer
     )
@@ -57,30 +57,30 @@ songplay_table_create = ("""
         songplay_id integer IDENTITY(0, 1) PRIMARY KEY, 
         start_time timestamp NOT NULL, 
         user_id integer NOT NULL, 
-        level varchar(100), 
-        song_id varchar(20), 
-        artist_id varchar(20),
+        level varchar(255), 
+        song_id varchar(255), 
+        artist_id varchar(255),
         session_id integer, 
-        location varchar(200), 
-        user_agent varchar(100)
+        location varchar(255), 
+        user_agent varchar(255)
     );
 """)
 
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users (
         user_id integer PRIMARY KEY, 
-        first_name varchar(100), 
-        last_name varchar(100), 
-        gender varchar(1), 
-        level varchar(10)
+        first_name varchar(255), 
+        last_name varchar(255), 
+        gender varchar(255), 
+        level varchar(255)
     );
 """)
 
 song_table_create = ("""
     CREATE TABLE IF NOT EXISTS song (
-        song_id varchar(20) PRIMARY KEY, 
+        song_id varchar(255) PRIMARY KEY, 
         title varchar(255), 
-        artist_id varchar(20), 
+        artist_id varchar(255), 
         year integer, 
         duration float
     );
@@ -88,11 +88,11 @@ song_table_create = ("""
 
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artist (
-        artist_id varchar(100) PRIMARY KEY, 
-        name varchar(175) NOT NULL, 
-        location varchar(100), 
-        latitude varchar(100), 
-        longitude varchar(100)
+        artist_id varchar(255) PRIMARY KEY, 
+        name varchar(255) NOT NULL, 
+        location varchar(255), 
+        latitude varchar(255), 
+        longitude varchar(255)
     );
 """)
 
