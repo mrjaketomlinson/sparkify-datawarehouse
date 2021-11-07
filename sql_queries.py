@@ -137,7 +137,7 @@ songplay_table_insert = ("""
         se.location as location,
         se.userAgent as user_agent
     FROM staging_events se
-    JOIN staging_songs ss ON ss. = se.
+    JOIN staging_songs ss ON ss.title = se.song AND ss.artist_name = se.artist
     WHERE se.page = 'NextSong'
 """)
 
@@ -150,6 +150,7 @@ user_table_insert = ("""
         gender as gender,
         level as level
     FROM staging_events
+    WHERE userId IS NOT NULL
 """)
 
 song_table_insert = ("""
@@ -181,7 +182,7 @@ time_table_insert = ("""
         DATE_PART(h, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as hour,
         DATE_PART(d, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as day,
         DATE_PART(w, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as week,
-        DATE_PART(m, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as month,
+        DATE_PART(mon, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as month,
         DATE_PART(y, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as year,
         DATE_PART(dow, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as weekday
     FROM staging_events
