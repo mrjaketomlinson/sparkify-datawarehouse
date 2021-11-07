@@ -16,7 +16,7 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 # CREATE TABLES
 staging_events_table_create= ("""
     CREATE TABLE IF NOT EXISTS staging_events (
-        artist varchar(255),
+        artist varchar(400),
         auth varchar(255),
         firstName varchar(255),
         gender varchar(255),
@@ -24,7 +24,7 @@ staging_events_table_create= ("""
         lastName varchar(255),
         length float,
         level varchar(255),
-        location varchar(255),
+        location varchar(400),
         method varchar(255),
         page varchar(255),
         registration float,
@@ -34,51 +34,51 @@ staging_events_table_create= ("""
         ts bigint,
         userAgent varchar(255),
         userId integer
-    )
+    );
 """)
 
 staging_songs_table_create = ("""
     CREATE TABLE IF NOT EXISTS staging_songs (
         num_songs integer NOT NULL,
         artist_id varchar(255) NOT NULL,
-        artist_location varchar(255), 
+        artist_location varchar(400), 
         artist_latitude varchar(255), 
         artist_longitude varchar(255),
-        artist_name varchar(255),
+        artist_name varchar(400),
         song_id varchar(255),
         title varchar(255),
         duration float,
         year integer
-    )
+    );
 """)
 
 songplay_table_create = ("""
     CREATE TABLE IF NOT EXISTS songplay (
-        songplay_id integer IDENTITY(0, 1) PRIMARY KEY, 
+        songplay_id integer IDENTITY(0, 1) PRIMARY KEY DISTKEY, 
         start_time timestamp NOT NULL, 
         user_id integer NOT NULL, 
         level varchar(255), 
         song_id varchar(255), 
         artist_id varchar(255),
         session_id integer, 
-        location varchar(255), 
+        location varchar(400), 
         user_agent varchar(255)
     );
 """)
 
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users (
-        user_id integer PRIMARY KEY, 
+        user_id integer PRIMARY KEY DISTKEY, 
         first_name varchar(255), 
         last_name varchar(255), 
         gender varchar(255), 
-        level varchar(255)
+        level varchar(255) SORTKEY
     );
 """)
 
 song_table_create = ("""
     CREATE TABLE IF NOT EXISTS song (
-        song_id varchar(255) PRIMARY KEY, 
+        song_id varchar(255) PRIMARY KEY DISTKEY, 
         title varchar(255), 
         artist_id varchar(255), 
         year integer, 
@@ -88,9 +88,9 @@ song_table_create = ("""
 
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artist (
-        artist_id varchar(255) PRIMARY KEY, 
-        name varchar(255) NOT NULL, 
-        location varchar(255), 
+        artist_id varchar(255) PRIMARY KEY DISTKEY, 
+        name varchar(400) NOT NULL, 
+        location varchar(400), 
         latitude varchar(255), 
         longitude varchar(255)
     );
@@ -98,8 +98,8 @@ artist_table_create = ("""
 
 time_table_create = ("""
     CREATE TABLE IF NOT EXISTS time (
-        time_id integer IDENTITY(0, 1) PRIMARY KEY,
-        timestamp timestamp,
+        time_id integer IDENTITY(0, 1) PRIMARY KEY DISTKEY,
+        timestamp timestamp SORTKEY,
         hour integer, 
         day integer, 
         week integer, 
@@ -138,7 +138,7 @@ songplay_table_insert = ("""
         se.userAgent as user_agent
     FROM staging_events se
     JOIN staging_songs ss ON ss.title = se.song AND ss.artist_name = se.artist
-    WHERE se.page = 'NextSong'
+    WHERE se.page = 'NextSong';
 """)
 
 user_table_insert = ("""
@@ -150,7 +150,7 @@ user_table_insert = ("""
         gender as gender,
         level as level
     FROM staging_events
-    WHERE userId IS NOT NULL
+    WHERE userId IS NOT NULL;
 """)
 
 song_table_insert = ("""
@@ -161,7 +161,7 @@ song_table_insert = ("""
         artist_id as artist_id,
         year as year,
         duration as duration
-    FROM staging_songs
+    FROM staging_songs;
 """)
 
 artist_table_insert = ("""
@@ -172,7 +172,7 @@ artist_table_insert = ("""
         artist_location as location,
         artist_latitude as latitude,
         artist_longitude as longitude
-    FROM staging_songs
+    FROM staging_songs;
 """)
 
 time_table_insert = ("""
@@ -185,7 +185,7 @@ time_table_insert = ("""
         DATE_PART(mon, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as month,
         DATE_PART(y, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as year,
         DATE_PART(dow, TIMESTAMP 'epoch' + ts/1000 *INTERVAL '1 second') as weekday
-    FROM staging_events
+    FROM staging_events;
 """)
 
 # QUERY LISTS
